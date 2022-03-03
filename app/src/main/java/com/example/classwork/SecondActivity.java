@@ -18,8 +18,9 @@ import com.example.classwork.databinding.ActivitySekondBinding;
 import java.io.File;
 
 public class SecondActivity extends AppCompatActivity {
+
     private ActivitySekondBinding binding;
-    private static final int pic_id = 123;
+    private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,8 @@ public class SecondActivity extends AppCompatActivity {
         openCamera();
         openGallery();
         openWhatsapp();
-        openTelegram();
+        setData();
     }
-
 
     private void openBrowser() {
         binding.browserBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,7 @@ public class SecondActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                startActivityForResult(intent ,0);
+                startActivityForResult(intent, 0);
 
             }
         });
@@ -77,7 +77,8 @@ public class SecondActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 0) {
-            binding.imAvatar.setImageURI(data.getData());
+            uri = data.getData();
+            binding.imAvatar.setImageURI(uri);
         }
     }
 
@@ -94,18 +95,15 @@ public class SecondActivity extends AppCompatActivity {
         });
     }
 
-    private void openTelegram() {
-        binding.btnTelegram.setOnClickListener(new View.OnClickListener() {
+
+    private void setData() {
+        binding.btnTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String number = "+996 700973677";
-                String url = "" + number;
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-
+            Intent intent = new Intent(SecondActivity.this,MainActivity.class);
+            intent.putExtra("key",uri);
+            startActivity(intent);
             }
         });
     }
-
 }
